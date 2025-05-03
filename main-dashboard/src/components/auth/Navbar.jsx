@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import restoLogo from './restoLogo.png';
 import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -8,21 +9,25 @@ import Tooltip from '@mui/material/Tooltip';
 const Navbar = ({ userRole, handleLogout }) => {
     return (
         <nav className="navbar">
-            <ul>
+            <div className="navbar-left">
+                <img src={restoLogo} alt="Logo" className="navbar-logo" />
+            </div>
+
+            <ul className="navbar-right">
                 {userRole === 'admin' && (
                     <>
-                        <li><Link to="/admin-dashboard">Home</Link></li>
-                        <li><Link to="/addproduct">Product</Link></li>
-                        <li><Link to="/addstock">Stock</Link></li>
-                        <li><Link to="/customerorders">Customer Orders</Link></li>
+                        <li><Link to="/adminpage/admin-dashboard">Home</Link></li>
+                        <li><Link to="/adminpage/addproduct">Product</Link></li>
+                        <li><Link to="/adminpage/addstock">Stock</Link></li>
+                        <li><Link to="/adminpage/customerorders">Customer Orders</Link></li>
                     </>
                 )}
 
                 {userRole === 'customer' && (
                     <>
-                        <li><Link to="/customer-dashboard">Home</Link></li>
-                        <li><Link to="/productlist">Product List</Link></li>
-                        <li><Link to="/orderedlist">Ordered List</Link></li>
+                        <li><Link to="/customerpage/customer-dashboard">Home</Link></li>
+                        <li><Link to="/customerpage/productlist">Product List</Link></li>
+                        <li><Link to="/customerpage/orderedlist">Ordered List</Link></li>
                     </>
                 )}
 

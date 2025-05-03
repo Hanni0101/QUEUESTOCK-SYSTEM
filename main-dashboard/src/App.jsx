@@ -14,14 +14,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginForm />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/add-stock" element={<AddStock />} />
-        <Route path="/admin/customer-orders" element={<CustomerOrder />} />
-        <Route path="/admin/add-product" element={<AddProduct />} />
+        <Route path="/adminpage/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/adminpage/addstock" element={<AddStock />} />
+        <Route path="/adminpage/customer-orders" element={<CustomerOrder />} />
+        <Route path="/adminpage/addproduct" element={<AddProduct />} />
 
-        <Route path="/customer/dashboard" element={<CustomerDashboard />} />
-        <Route path="/customer/products" element={<ProductList />} />
-        <Route path="/customer/orders" element={<OrderedList />} />
+        <Route path="/customerpage/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/customerpage/productlist" element={<ProductList />} />
+        <Route path="/customerpage/orderedlist" element={<OrderedList />} />
       </Routes>
     </Router>
   );

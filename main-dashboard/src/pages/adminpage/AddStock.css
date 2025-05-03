@@ -1,0 +1,26 @@
+.add-stock-container {
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding-top: 15vh;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.add-stock-box {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.add-stock-addbutton {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.stock-table-wrapper {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}

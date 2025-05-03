@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -8,25 +9,34 @@ import './LoginForm.css';
 
 function LoginForm() {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
+  const [name, setName]         = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError]       = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", name, password);
-  
-    if (name === 'admin' && password === 'Admin12345@') {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/customer/dashboard');
+    setError('');
+
+    try {
+      const { data } = await axios.post(
+        'http://localhost:5000/api/clients/login',
+        { name, password }
+      );
+
+      if (data.role === 'admin') {
+        navigate('/adminpage/admin-dashboard');
+      } else {
+       navigate('/customerpage/customer-dashboard');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
-  
 
   return (
     <div className="login-container">
       <Box className="login-box" component="form" onSubmit={handleLogin}>
-        <img src={restoLogo} alt="Restaurant Logo" className="logo" />
+        <img src={restoLogo} alt="Logo" className="logo" />
         <TextField
           label="Name"
           variant="outlined"
@@ -34,9 +44,8 @@ function LoginForm() {
           margin="normal"
           required
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={e => setName(e.target.value)}
         />
-
         <TextField
           label="Password"
           type="password"
@@ -45,10 +54,10 @@ function LoginForm() {
           margin="normal"
           required
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
-
-        <Button type="submit" variant="contained" fullWidth className="login-button">
+        {error && <p className="error">{error}</p>}
+        <Button type="submit" variant="contained" fullWidth>
           Submit
         </Button>
       </Box>
