@@ -17,9 +17,10 @@ const Navbar = ({ userRole, handleLogout }) => {
                 {userRole === 'admin' && (
                     <>
                         <li><Link to="/adminpage/admin-dashboard">Home</Link></li>
+                        <li><Link to="/adminpage/users">Users</Link></li>
                         <li><Link to="/adminpage/addproduct">Product</Link></li>
                         <li><Link to="/adminpage/addstock">Stock</Link></li>
-                        <li><Link to="/adminpage/customerorders">Customer Orders</Link></li>
+                        <li><Link to="/adminpage/customer-orders">Customer Orders</Link></li>
                     </>
                 )}
 

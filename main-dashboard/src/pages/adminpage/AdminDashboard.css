@@ -1,0 +1,17 @@
+.admin-dashboard-container {
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding-top: 15vh;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    color: #000;
+}
+
+.admin-dashboard-box {
+    max-width: 100%;
+}

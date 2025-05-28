@@ -8,6 +8,7 @@ import AddProduct from './pages/adminpage/AddProduct';
 import CustomerDashboard from './pages/customerpage/CustomerDashboard';
 import ProductList from './pages/customerpage/ProductList';
 import OrderedList from './pages/customerpage/OrderedList';
+import Users from './pages/adminpage/Users';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/adminpage/addstock" element={<AddStock />} />
         <Route path="/adminpage/customer-orders" element={<CustomerOrder />} />
         <Route path="/adminpage/addproduct" element={<AddProduct />} />
+        <Route path="/adminpage/users" element={<Users />} />
 
         <Route path="/customerpage/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/customerpage/productlist" element={<ProductList />} />

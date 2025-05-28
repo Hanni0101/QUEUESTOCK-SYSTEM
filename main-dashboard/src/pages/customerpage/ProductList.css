@@ -2,7 +2,6 @@
     display: grid;
     grid-template-columns: repeat(4, 340px); 
     gap: 30px; 
-    /* padding: 30px; */
     padding-top: 15vh;
     padding-left: 2.2rem;
     padding-right: 2rem;

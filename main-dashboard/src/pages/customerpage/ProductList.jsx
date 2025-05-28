@@ -22,9 +22,25 @@ export default function ProductList() {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(); 
+  
+    const interval = setInterval(() => {
+      fetchProducts(); 
+    }, 1000); 
+  
+    return () => clearInterval(interval); 
   }, []);
+  
+  const [amount, setAmount] = useState(0); 
+  const [change, setChange] = useState(0); 
+
+  const handleAmountChange = (e) => {
+    const inputAmount = parseFloat(e.target.value) || 0;
+    setAmount(inputAmount);
+    setChange(inputAmount - calculateTotalPrice());
+  };
 
   const fetchProducts = async () => {
     try {
@@ -51,52 +67,40 @@ export default function ProductList() {
     setOpenModal(true);
   };
 
-  // const handleAddOrder = async () => {
-  //   try {
-  //     const orderData = {
-  //       product_name: selectedProduct.product_name,
-  //       product_price: selectedProduct.product_price,
-  //       quantity,
-  //       total_price: quantity * selectedProduct.product_price,
-  //       delivery_method: deliveryMethod,
-  //       table_number: tableNumber,
-  //       delivery_address: deliveryAddress
-  //     };
-  
-  //     const response = await axios.post('http://localhost:5000/api/orders', orderData);
-  //     console.log("Order added:", response.data); 
-  
-  //     setOpenModal(false);
-  //     navigate('/customerpage/orderedlist'); 
-  //   } catch (err) {
-  //     console.error("Error adding order:", err);
-  //   }
-  // };
-
   const handleAddOrder = async () => {
     try {
+      const customerName = localStorage.getItem('userName');
+      
+      if (!customerName) {
+        setError('Please login again');
+        return;
+      }
+
       const orderData = {
+        customer_name: customerName,
         product_name: selectedProduct.product_name,
         product_price: selectedProduct.product_price,
         quantity,
         total_price: quantity * selectedProduct.product_price,
         delivery_method: deliveryMethod,
-        table_number: tableNumber,
-        delivery_address: deliveryAddress
+        table_number: deliveryMethod === 'Dine-in' ? tableNumber : null,
+        delivery_address: deliveryMethod === 'To be Delivered' ? deliveryAddress : null,
+        amount,
+        change,
       };
-  
+
+      console.log("Order data being sent:", orderData);
+
       const response = await axios.post('http://localhost:5000/api/orders', orderData);
       console.log("Order added:", response.data);
-  
+
       setOpenModal(false);
-      fetchOrders();
-      navigate('/customerpage/orderedlist'); 
+      navigate('/customerpage/orderedlist');
     } catch (err) {
-      console.error("Error adding order:", err);
-      setError("Error adding order. Please try again.");
+      console.error("Error adding order:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Error adding order. Please try again.");
     }
   };
-  
 
   const handleCancel = () => {
     setOpenModal(false);
@@ -180,6 +184,26 @@ export default function ProductList() {
                   readOnly: true,
                 }}
               />
+              
+              <TextField
+              label="Amount"
+              type="number"
+              fullWidth
+              value={amount}
+              onChange={handleAmountChange}
+              margin="normal"
+            />
+
+            <TextField
+              label="Change"
+              type="text"
+              fullWidth
+              value={`₱${change}`}
+              margin="normal"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
 
               <TextField
                 select
@@ -220,16 +244,17 @@ export default function ProductList() {
           )}
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleAddOrder}
-            variant="contained"
-            disabled={
-              (deliveryMethod === 'Dine-in' && !tableNumber) ||
-              (deliveryMethod === 'To be Delivered' && !deliveryAddress)
-            }
-          >
-            Add Order
-          </Button>
+        <Button
+          onClick={handleAddOrder}
+          variant="contained"
+          disabled={
+            (deliveryMethod === 'Dine-in' && !tableNumber) ||
+            (deliveryMethod === 'To be Delivered' && !deliveryAddress) ||
+            amount < calculateTotalPrice() 
+          }
+        >
+          Add Order
+        </Button>
           <Button onClick={handleCancel}>Cancel</Button>
         </DialogActions>
       </Dialog>
